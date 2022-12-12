@@ -1,0 +1,62 @@
+{
+	"name": "@ui5/tooling",
+	"private": true,
+	"version": "0.0.1",
+	"description": "UI5 Tooling - Main Repository",
+	"author": {
+		"name": "SAP SE",
+		"email": "openui5@sap.com",
+		"url": "https://www.sap.com"
+	},
+	"license": "Apache-2.0",
+	"keywords": [
+		"openui5",
+		"sapui5",
+		"ui5",
+		"build",
+		"development",
+		"tool"
+	],
+	"type": "module",
+	"engines": {
+		"node": "^16.18.0 || >=18.0.0",
+		"npm": ">= 8"
+	},
+	"scripts": {
+		"test": "npm run lint && npm run jsdoc-generate && npm run schema-generate && npm run generate-cli-doc",
+		"lint": "eslint ./",
+		"jsdoc": "npm run jsdoc-generate && open-cli site/api/index.html",
+		"jsdoc-generate": "node ./scripts/isWorkspace.js && npm run jsdoc-generate-workspace || npm run jsdoc-generate-local",
+		"jsdoc-generate-local": "jsdoc -c ./jsdoc.json -t $(node -p 'path.dirname(require.resolve(\"docdash\"))') ./ || (echo 'Error during JSDoc generation! Check log.' && exit 1)",
+		"jsdoc-generate-workspace": "jsdoc -c ./jsdoc-workspace.json -t $(node -p 'path.dirname(require.resolve(\"docdash\"))') ../ || (echo 'Error during JSDoc generation! Check log.' && exit 1)",
+		"docs": "bash ./scripts/serveDocs.sh",
+		"docs-generate": "bash ./scripts/buildDocs.sh && open-cli http://localhost:8000 && ws --compress -d site",
+		"schema-generate": "node ./scripts/buildSchema.js",
+		"generate-cli-doc": "node ./scripts/generateCliDoc.js",
+		"depcheck": "depcheck --ignores @ui5/builder,@ui5/cli,@ui5/fs,@ui5/logger,@ui5/project,@ui5/server,docdash,local-web-server"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git@github.com:SAP/ui5-tooling.git"
+	},
+	"dependencies": {
+		"@ui5/builder": "^3.0.0-beta.4",
+		"@ui5/cli": "^3.0.0-beta.4",
+		"@ui5/fs": "^3.0.0-beta.4",
+		"@ui5/logger": "^3.0.1-beta.1",
+		"@ui5/project": "^3.0.0-beta.4",
+		"@ui5/server": "^3.0.0-beta.4"
+	},
+	"devDependencies": {
+		"@apidevtools/json-schema-ref-parser": "^9.1.0",
+		"depcheck": "^1.4.3",
+		"docdash": "^2.0.0",
+		"eslint": "^8.29.0",
+		"eslint-config-google": "^0.14.0",
+		"handlebars": "^4.7.7",
+		"jsdoc": "^3.6.11",
+		"local-web-server": "^5.2.1",
+		"open-cli": "^7.1.0",
+		"traverse": "^0.6.7"
+	}
+}
